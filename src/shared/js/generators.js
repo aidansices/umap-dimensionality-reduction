@@ -14,7 +14,7 @@
   ==============================================================================*/
 
 import * as d3 from "d3";
-import { createCanvas } from "canvas";
+// import { createCanvas } from "canvas"; // Temporarily disabled for build
 
 // Euclidean distance.
 export function dist(a, b) {
@@ -507,6 +507,9 @@ function drawLine(ctx, angle, nPixels) {
 }
 
 export function continuousLineImages(nLines, nPixels = 28) {
+  // Temporarily disabled - requires canvas package
+  return [];
+  /*
   const canvas = createCanvas(nPixels, nPixels);
   const ctx = canvas.getContext("2d");
 
@@ -519,6 +522,7 @@ export function continuousLineImages(nLines, nPixels = 28) {
     output.push(new Point(pixelData, angleColor(angle)));
   }
   return output;
+  */
 }
 
 export function clusteredLineImages(
@@ -527,6 +531,9 @@ export function clusteredLineImages(
   noiseParam = 25,
   nPixels = 28
 ) {
+  // Temporarily disabled - requires canvas package  
+  return [];
+  /*
   const canvas = createCanvas(nPixels, nPixels);
   const ctx = canvas.getContext("2d");
 
@@ -544,6 +551,7 @@ export function clusteredLineImages(
     }
   }
   return output;
+  */
 }
 
 export function linePreview() {

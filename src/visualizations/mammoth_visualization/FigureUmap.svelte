@@ -15,7 +15,7 @@
   ==============================================================================*/
 
   import Figure from "../../article/Figure.svelte";
-  import Visualization from "./components/VisualizationUmap.svelte";
+  import Visualization from "./components/VisualizationUmapWithModels.svelte";
 </script>
 
 <style>

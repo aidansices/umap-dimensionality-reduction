@@ -47,7 +47,10 @@
   export let hoveredPointIndex = -1;
 
   const getKey = () => `n=${nNeighbors},d=${minDist}`;
-  const getCurrentProjection = () => projections[getKey()];
+  const getCurrentProjection = () => {
+    if (!projections) return null;
+    return projections[getKey()];
+  };
 
   let projection = getCurrentProjection();
 
@@ -55,6 +58,12 @@
     nNeighbors = neighbors[nNeighborsIndex];
     minDist = dists[distsIndex];
     projection = getCurrentProjection();
+    console.log("Umap2d afterUpdate - projection:", projection ? projection.length : "null");
+  });
+
+  onMount(() => {
+    console.log("Umap2d onMount - colorIndices:", colorIndices ? colorIndices.length : "null");
+    console.log("Umap2d onMount - projections:", projections ? Object.keys(projections) : "null");
   });
 </script>
 

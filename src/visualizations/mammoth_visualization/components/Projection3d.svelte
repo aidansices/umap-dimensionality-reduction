@@ -25,7 +25,7 @@
   let isOrbiting = true;
 
   export let colorIndices;
-  export let mammoth3d;
+  export let model3d;
   export let title = "";
   export let hoveredPointIndex = -1;
 
@@ -39,9 +39,17 @@
   };
 
   onMount(async () => {
+    console.log("Projection3d onMount - model3d:", model3d ? model3d.length : "null");
+    console.log("Projection3d onMount - colorIndices:", colorIndices ? colorIndices.length : "null");
+    
+    if (!model3d || !colorIndices) {
+      console.error("Projection3d: Missing required data", { model3d: !!model3d, colorIndices: !!colorIndices });
+      return;
+    }
+    
     const dataset = {
       dimensions: 3,
-      points: mammoth3d,
+      points: model3d,
       metadata: []
     };
 
