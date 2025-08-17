@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug - UMAP Visualization</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .pass { background-color: #d4edda; }
+        .fail { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>Debug UMAP Visualization Dependencies</h1>
+    
+    <div id="tests"></div>
+    
+    <h2>Console Output</h2>
+    <div id="console"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.12.0/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.106.2/build/three.min.js"></script>
+    <script src="/scatter-gl.min.js"></script>
+    
+    <script>
+        const tests = document.getElementById('tests');
+        const consoleDiv = document.getElementById('console');
+        
+        function addTest(name, result, details) {
+            const div = document.createElement('div');
+            div.className = `test ${result ? 'pass' : 'fail'}`;
+            div.innerHTML = `<strong>${name}:</strong> ${result ? 'PASS' : 'FAIL'} ${details ? `(${details})` : ''}`;
+            tests.appendChild(div);
+        }
+        
+        function log(message) {
+            const div = document.createElement('div');
+            div.textContent = new Date().toISOString() + ': ' + message;
+            consoleDiv.appendChild(div);
+            console.log(message);
+        }
+        
+        // Test 1: Basic JavaScript
+        addTest('JavaScript', true, 'Basic JS working');
+        
+        // Test 2: D3
+        try {
+            addTest('D3 Library', typeof d3 !== 'undefined', `Version: ${d3.version || 'unknown'}`);
+        } catch (e) {
+            addTest('D3 Library', false, e.message);
+        }
+        
+        // Test 3: Three.js  
+        try {
+            addTest('Three.js Library', typeof THREE !== 'undefined', `Version: ${THREE.REVISION || 'unknown'}`);
+        } catch (e) {
+            addTest('Three.js Library', false, e.message);
+        }
+        
+        // Test 4: ScatterGL
+        try {
+            addTest('ScatterGL Library', typeof ScatterGL !== 'undefined', 'ScatterGL class available');
+        } catch (e) {
+            addTest('ScatterGL Library', false, e.message);
+        }
+        
+        // Test 5: WebGL Support
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            addTest('WebGL Support', !!gl, gl ? 'WebGL context created successfully' : 'No WebGL context');
+        } catch (e) {
+            addTest('WebGL Support', false, e.message);
+        }
+        
+        // Test 6: Fetch mammoth data
+        log('Testing data fetch...');
+        Promise.all([
+            fetch('/mammoth_10k_encoded.json'),
+            fetch('/mammoth_3d.json'),
+            fetch('/dragon_10k_encoded.json'),
+            fetch('/dragon_3d.json'),
+            fetch('/t-rex_10k_encoded.json'),
+            fetch('/t-rex_3d.json')
+        ]).then(responses => {
+            responses.forEach((response, i) => {
+                const files = ['mammoth_10k_encoded.json', 'mammoth_3d.json', 'dragon_10k_encoded.json', 
+                              'dragon_3d.json', 't-rex_10k_encoded.json', 't-rex_3d.json'];
+                addTest(`Data File: ${files[i]}`, response.ok, `Status: ${response.status}`);
+                if (!response.ok) {
+                    log(`Failed to load ${files[i]}: ${response.status}`);
+                }
+            });
+        }).catch(e => {
+            log(`Data fetch error: ${e.message}`);
+            addTest('Data Files', false, e.message);
+        });
+        
+        // Test 7: Try creating a simple ScatterGL instance
+        setTimeout(() => {
+            try {
+                log('Testing ScatterGL creation...');
+                const testDiv = document.createElement('div');
+                testDiv.style.width = '100px';
+                testDiv.style.height = '100px';
+                document.body.appendChild(testDiv);
+                
+                const scatterGL = new ScatterGL(testDiv, {
+                    selectEnabled: false
+                });
+                
+                addTest('ScatterGL Creation', true, 'ScatterGL instance created successfully');
+                log('ScatterGL test passed');
+            } catch (e) {
+                addTest('ScatterGL Creation', false, e.message);
+                log(`ScatterGL creation failed: ${e.message}`);
+            }
+        }, 2000);
+        
+        log('Debug tests started');
+    </script>
+</body>
+</html>
