@@ -1,40 +1,92 @@
-# Understanding UMAP
+# Multi-Model UMAP Visualization
 
-Dimensionality reduction is a powerful tool for machine learning practitioners to visualize and understand large, high dimensional datasets. One of the most widely used techniques for visualization is [t-SNE](https://lvdmaaten.github.io/tsne/), but its performance suffers with large datasets and using it correctly can be [challenging](https://distill.pub/2016/misread-tsne/).
+An interactive web application for exploring multiple 3D models and their UMAP (Uniform Manifold Approximation and Projection) dimensionality reductions. Switch between different models with a dropdown selector and visualize both the original 3D data and 2D UMAP projections side by side.
 
-[UMAP](https://github.com/lmcinnes/umap) is a new technique by McInnes et al. that offers a number of advantages over t-SNE, most notably increased speed and better preservation of the data's global structure. In this article, we'll take a look at the theory behind UMAP in order to better understand how the algorithm works, how to use it effectively, and how its performance compares with t-SNE.
+🌐 **[Live Demo](https://aidansices.github.io/umap-models/)**
 
+## 🎯 Features
+
+- **Multi-Model Support**: Switch between different 3D models (Mammoth, Dragon, T-rex, Buddha) with a dropdown
+- **Dual Visualization**: View original 3D data and 2D UMAP projections simultaneously
+- **Interactive**: Hover over points to see corresponding highlights across both visualizations
+- **Responsive Design**: Works on both desktop and mobile devices
+- **Instant Switching**: Models load quickly with visual feedback
+- **Consistent Coloring**: Same color scheme maintained across all models
+
+## 🚀 Quick Start
+
+### View Online
+Visit the live demo: **https://aidansices.github.io/umap-models/**
+
+### Run Locally
 ```bash
-yarn
-yarn dev
+# Clone the repository
+git clone https://github.com/aidansices/umap-models.git
+cd umap-models
+
+# Install dependencies
+npm install
+
+# Build the visualization
+FIGURE=mammoth-umap npm run build:main
+
+# Serve locally
+npm start
+# Or use Python's built-in server:
+cd public && python3 -m http.server 8000
 ```
 
-#### Publishing to github pages
+Visit `http://localhost:5000` (or `http://localhost:8000` if using Python)
 
-```bash
-yarn pub
+## 📁 Adding Your Own Models
+
+### 1. Prepare Your Data
+Your model data should be in JSON format with this structure:
+```json
+{
+  "projections": {
+    "0": [x1, y1],
+    "1": [x2, y2],
+    ...
+  },
+  "labels": [label1, label2, ...],
+  "3d": [
+    [x1, y1, z1],
+    [x2, y2, z2],
+    ...
+  ]
+}
 ```
 
-#### To develop figures individually
+### 2. Add Model File
+1. Save your JSON file in `raw_data/models/` (e.g., `raw_data/models/your-model.json`)
 
-```bash
-yarn dev:cech
-yarn dev:hyperparameters
-yarn dev:mammoth-umap
-yarn dev:mammoth-tsne
-yarn dev:supplement
-yarn dev:toy
-yarn dev:toy_comparison
+### 3. Register the Model
+Add your model to `src/shared/js/models-config.js`:
+```javascript
+export const MODELS = [
+  // ... existing models
+  {
+    id: "your-model",
+    name: "Your Model Name",
+    description: "Description of your 3D model",
+    filename: "your-model.json"
+  }
+];
 ```
 
-#### Data preprocessing
-
-For the mammoth figures, the [raw 3D data](https://github.com/MNoichl/UMAP-examples-mammoth-/blob/master/mammoth_a.csv) was downsampled to 50,000 points before being projected with UMAP / t-SNE. These 50,000 points were then randomly subsampled to 10,000 points in order to minimize the payload size.
-
-_Understanding UMAP_ uses a few tricks to make the data payloads for some of the interactive figures small enough to download in a reasonable time. The `mammoth` figures use a 10-bit encoding scheme to compress the 10,000 data points into a significantly smaller payload. The `hyperparameters` and `toy_comparison` figures precompute UMAP embeddings for all of their different combinations, then use the same 10-bit encoding scheme to compress the data.
-
+### 4. Build and Deploy
 ```bash
-yarn preprocess:hyperparameters
-yarn preprocess:mammoth
-yarn preprocess:toy_comparison
+# Preprocess the new model data
+npm run preprocess:models
+
+# Build the visualization
+FIGURE=mammoth-umap npm run build:main
+
+# Deploy to GitHub Pages
+npm run pub
 ```
+
+## 🛠️ Development
+
+### Project Structure
