@@ -2,7 +2,7 @@
 
 An interactive web application for exploring multiple 3D models and their UMAP (Uniform Manifold Approximation and Projection) dimensionality reductions. Switch between different models with a dropdown selector and visualize both the original 3D data and 2D UMAP projections side by side.
 
-🌐 **[Live Demo](https://aidansices.github.io/umap-models/)**
+🌐 **[Live Demo](https://aidansices.github.io/umap-dimensionality-reduction/)**
 
 ## 🎯 Features
 
@@ -16,12 +16,12 @@ An interactive web application for exploring multiple 3D models and their UMAP (
 ## 🚀 Quick Start
 
 ### View Online
-Visit the live demo: **https://aidansices.github.io/umap-models/**
+Visit the live demo: **https://aidansices.github.io/umap-dimensionality-reduction/**
 
 ### Run Locally
 ```bash
 # Clone the repository
-git clone https://github.com/aidansices/umap-models.git
+git clone https://github.com/aidansices/umap-dimensionality-reduction.git
 cd umap-models
 
 # Install dependencies
