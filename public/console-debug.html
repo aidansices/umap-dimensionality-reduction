@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Console Debug Instructions</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .step { background: #f8f9fa; padding: 15px; margin: 10px 0; border-left: 4px solid #007bff; }
+        .code { background: #f8f9fa; padding: 10px; font-family: monospace; border-radius: 4px; margin: 5px 0; }
+        .important { background: #fff3cd; border-left-color: #ffc107; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug the UMAP Visualization</h1>
+    
+    <p>I've added debug logging to identify exactly why the visualizations aren't rendering. Follow these steps:</p>
+    
+    <div class="step">
+        <h3>Step 1: Open Browser Developer Tools</h3>
+        <p><strong>Chrome/Edge:</strong> Press <code>F12</code> or right-click → "Inspect Element"</p>
+        <p><strong>Firefox:</strong> Press <code>F12</code> or right-click → "Inspect Element"</p>
+        <p><strong>Safari:</strong> Press <code>Cmd+Option+I</code> (enable Developer menu first in Preferences)</p>
+    </div>
+    
+    <div class="step">
+        <h3>Step 2: Go to Console Tab</h3>
+        <p>Click on the "Console" tab in the developer tools panel</p>
+    </div>
+    
+    <div class="step important">
+        <h3>Step 3: Navigate to Main Visualization</h3>
+        <p><strong>Visit:</strong> <a href="/">http://localhost:3000</a></p>
+        <p>You should see debug messages in the console like:</p>
+        <div class="code">
+VisualizationUmapWithModels: onMount starting<br>
+Available models: [...]<br>
+Default model selected: mammoth<br>
+Loading model: mammoth<br>
+Fetching data for model: mammoth<br>
+...
+        </div>
+    </div>
+    
+    <div class="step">
+        <h3>Step 4: Check for Errors</h3>
+        <p>Look for any <span style="color: red;">red error messages</span> in the console</p>
+        <p>Common issues to look for:</p>
+        <ul>
+            <li>Network errors (404s, failed fetches)</li>
+            <li>JavaScript errors</li>
+            <li>WebGL context issues</li>
+            <li>Data parsing errors</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <h3>Step 5: Report Back</h3>
+        <p>Copy and paste the console output (especially any errors) back to me, and I'll fix the issue!</p>
+    </div>
+    
+    <hr>
+    
+    <h2>Quick Tests:</h2>
+    <p>If you see the dropdown but no visualization:</p>
+    <ul>
+        <li><strong>Test 1:</strong> Try switching between models in the dropdown</li>
+        <li><strong>Test 2:</strong> Check if the "Loading..." message appears and disappears</li>
+        <li><strong>Test 3:</strong> Look at the network tab to see if data files are loading (mammoth_10k_encoded.json, etc.)</li>
+    </ul>
+    
+    <div class="step important">
+        <h3>Expected Working Behavior:</h3>
+        <p>When working correctly, you should see:</p>
+        <ul>
+            <li>Dropdown selector at the top</li>
+            <li>Two visualization panels side by side</li>
+            <li>3D model on the left (should be interactive)</li>
+            <li>2D UMAP scatter plot on the right</li>
+            <li>Synchronized hovering between both panels</li>
+        </ul>
+    </div>
+</body>
+</html>
